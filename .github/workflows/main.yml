@@ -51,11 +51,15 @@ jobs:
     needs: build-and-push-image
 
     steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_PABLO }}
+
       - name: Deploy to Azure Web App for Container
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ github.event.inputs.AZURE_WEBAPP_NAME_PABLO }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE}}
+          app-name: ${{ github.event.inputs.AZURE_WEBAPP_NAME }}
           images: ${{ env.IMAGE_URL }}
 
   test-deploy:
@@ -75,4 +79,6 @@ jobs:
         uses: gacts/install-hurl@v1
 
       - name: Test API
-        run: hurl --variable host=https://${{ github.event.inputs.AZURE_WEBAPP_NAME }}.azurewebsites.net:${{ github.event.inputs.PORT }} --connect-timeout 20s --error-format long --verbose --test session.hurl
+        run: |
+          hurl --variable host=https://${{ github.event.inputs.AZURE_WEBAPP_NAME }}.azurewebsites.net:${{ github.event.inputs.PORT }} \
+               --connect-timeout 20s --error-format long --verbose --test session.hurl
