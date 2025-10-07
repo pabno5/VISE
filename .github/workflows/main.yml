@@ -1,4 +1,4 @@
-name: Azure Continuous Delivery Pablo
+name: Azure Continuous Delivery PABLO
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ on:
         required: true
 
 env:
-  IMAGE_URL: ${{ secrets.ACR_NAME_PÄBLO }}.azurecr.io/${{ github.event.inputs.IMAGE_REPOSITORY }}:${{ github.event.inputs.IMAGE_TAG }}
+  IMAGE_URL: ${{ secrets.ACR_NAME_PABLO }}.azurecr.io/${{ github.event.inputs.IMAGE_REPOSITORY }}:${{ github.event.inputs.IMAGE_TAG }}
 
 jobs:
   build-and-push-image:
